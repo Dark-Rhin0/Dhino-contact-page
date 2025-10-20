@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import "./App.css";
 import { QRCodeCanvas } from "qrcode.react";
+import html2canvas from "html2canvas";
 
 function App() {
   const [showQR, setShowQR] = useState(false);
@@ -34,31 +35,31 @@ function App() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Chia sẻ hoặc tải mã QR
+  // 📸 Chia sẻ hoặc tải mã QR có khung trang trí
   const handleShareQR = async () => {
-    const canvas = qrRef.current.querySelector("canvas");
-    if (!canvas) return;
+    const qrBox = qrRef.current;
+    if (!qrBox) return;
 
-    canvas.toBlob(async (blob) => {
-      const file = new File([blob], "qrcode.png", { type: "image/png" });
+    const canvas = await html2canvas(qrBox, { scale: 2, backgroundColor: null });
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+    const file = new File([blob], "qrcode.png", { type: "image/png" });
 
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            title: "Mã QR của Võ Đạt 💫",
-            files: [file],
-          });
-        } catch (error) {
-          console.error("Lỗi khi chia sẻ hình ảnh:", error);
-        }
-      } else {
-        // fallback tải ảnh nếu không share được
-        const link = document.createElement("a");
-        link.href = canvas.toDataURL("image/png");
-        link.download = "qrcode.png";
-        link.click();
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          title: "Mã QR của Võ Đạt 💫",
+          files: [file],
+        });
+      } catch (error) {
+        console.error("Lỗi khi chia sẻ hình ảnh:", error);
       }
-    });
+    } else {
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = "qrcode.png";
+      link.click();
+      alert("Đã tải ảnh mã QR có khung về máy!");
+    }
   };
 
   return (
@@ -100,19 +101,29 @@ function App() {
       {/* Popup QR */}
       {showQR && (
         <div className="qr-popup">
-          <div className="qr-content" ref={qrRef}>
+          <div className="qr-content">
             <button className="close-btn" onClick={toggleQRPopup}>
               &times;
             </button>
-            <h2>Hãy kết bạn với tôi</h2>
-            <QRCodeCanvas value={window.location.href} size={200} />
+            <h2>💫 Kết bạn với mình nhé! 💫</h2>
+
+            {/* 📸 Khung QR có trang trí */}
+            <div className="qr-frame" ref={qrRef}>
+              <div className="qr-border"></div>
+              <QRCodeCanvas value={window.location.href} size={200} />
+              <p className="qr-caption">SV  UIT</p>
+            </div>
+
             <div className="qr-buttons">
-              <button onClick={handleCopyLink}><i className="fa-slab fa-regular fa-copy"></i> Sao chép liên kết</button>
-              <button onClick={handleShareQR}><i className="fa-regular fa-share-from-square"></i> Chia sẻ mã QR</button>
+              <button onClick={handleCopyLink}>
+                <i className="fa-regular fa-copy"></i> Sao chép liên kết
+              </button>
+              <button onClick={handleShareQR}>
+                <i className="fa-regular fa-share-from-square"></i> Chia sẻ mã QR
+              </button>
             </div>
           </div>
 
-          {/* Thông báo khi sao chép */}
           {copied && <div className="copy-toast">Đã sao chép liên kết!</div>}
         </div>
       )}
