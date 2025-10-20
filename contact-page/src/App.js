@@ -91,7 +91,7 @@ function App() {
           <a href="https://www.tiktok.com/@darkrhino65" target="_blank" rel="noopener noreferrer">
             <i className="fa-brands fa-tiktok"></i> Tiktok
           </a>
-          <a href="mailto:example@gmail.com">
+          <a href="mailto:voletiendat09@gmail.com">
             <i className="fa-solid fa-envelope"></i> Email
           </a>
         </div>
