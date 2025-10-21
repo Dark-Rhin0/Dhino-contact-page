@@ -127,7 +127,7 @@ function App() {
 
         {/* 💌 Form gửi tin nhắn ẩn danh */}
         <div className="anonymous-message">
-          <h2>✉️Gửi tin nhắn ẩn danh✉️</h2>
+          <h2>✉️Gửi tin nhắn ẩn danh</h2>
           <textarea
             placeholder="Nhập nội dung tin nhắn..."
             value={message}
