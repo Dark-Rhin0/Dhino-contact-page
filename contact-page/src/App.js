@@ -6,6 +6,8 @@ import html2canvas from "html2canvas";
 function App() {
   const [showQR, setShowQR] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [message, setMessage] = useState("");
+  const [toast, setToast] = useState(null);
   const qrRef = useRef(null);
 
   // Hiện/ẩn popup QR
@@ -17,10 +19,9 @@ function App() {
       navigator
         .share({
           title: "Kết bạn với Võ Đạt 💫",
-          text: "Hãy xem trang của mình nhé!",
+          text: "kết bạn với Võ Đạt nhé!",
           url: window.location.href,
         })
-        .then(() => console.log("Chia sẻ thành công"))
         .catch((error) => console.log("Lỗi khi chia sẻ:", error));
     } else {
       navigator.clipboard.writeText(window.location.href);
@@ -62,6 +63,33 @@ function App() {
     }
   };
 
+  // 💌 Gửi tin nhắn ẩn danh (qua Discord webhook)
+  const sendAnonymousMessage = async () => {
+    if (!message.trim()) {
+      setToast({ type: "error", text: "⚠️ Vui lòng nhập nội dung!" });
+      setTimeout(() => setToast(null), 3000);
+      return;
+    }
+
+    try {
+      await fetch(
+        "https://discordapp.com/api/webhooks/1430112073957900299/iAj9dO2vWwTqbzsYW7wkTu9THEgiT9B_88C9_gahvidgeEKiRX3Fido3NibPl5C-61AJ",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content: `📩 Tin nhắn ẩn danh:\n${message}` }),
+        }
+      );
+
+      setToast({ type: "success", text: "🎉 Tin nhắn của bạn đã được gửi ẩn danh! 🎉" });
+      setMessage("");
+    } catch (err) {
+      setToast({ type: "error", text: "❌ Lỗi khi gửi tin nhắn!" });
+    }
+
+    setTimeout(() => setToast(null), 3000);
+  };
+
   return (
     <div className="App">
       <div className="header">
@@ -96,6 +124,17 @@ function App() {
             <i className="fa-solid fa-envelope"></i> Email
           </a>
         </div>
+
+        {/* 💌 Form gửi tin nhắn ẩn danh */}
+        <div className="anonymous-message">
+          <h2>✉️Gửi tin nhắn ẩn danh✉️</h2>
+          <textarea
+            placeholder="Nhập nội dung tin nhắn..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button onClick={sendAnonymousMessage}>Gửi</button>
+        </div>
       </div>
 
       {/* Popup QR */}
@@ -107,11 +146,10 @@ function App() {
             </button>
             <h2>💫 Kết bạn với mình nhé! 💫</h2>
 
-            {/* 📸 Khung QR có trang trí */}
             <div className="qr-frame" ref={qrRef}>
               <div className="qr-border"></div>
               <QRCodeCanvas value={window.location.href} size={200} />
-              <p className="qr-caption">SV  UIT</p>
+              <p className="qr-caption">SV UIT</p>
             </div>
 
             <div className="qr-buttons">
@@ -127,6 +165,9 @@ function App() {
           {copied && <div className="copy-toast">Đã sao chép liên kết!</div>}
         </div>
       )}
+
+      {/* 🧁 Toast Notification */}
+      {toast && <div className={`toast ${toast.type}`}>{toast.text}</div>}
     </div>
   );
 }
