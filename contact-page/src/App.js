@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import "./App.css";
 import { QRCodeCanvas } from "qrcode.react";
 import html2canvas from "html2canvas";
+import CustomCursor from "./CustomCursor";
 
 function App() {
   const [showQR, setShowQR] = useState(false);
@@ -92,6 +93,7 @@ function App() {
 
   return (
     <div className="App">
+      <CustomCursor />
       <div className="header">
         <button className="header-btn left-btn" onClick={toggleQRPopup}>
           <i className="fa-solid fa-qrcode"></i>
