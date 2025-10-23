@@ -3,7 +3,10 @@ import "./App.css";
 import { QRCodeCanvas } from "qrcode.react";
 import html2canvas from "html2canvas";
 import CustomCursor from "./CustomCursor";
+import confetti from "canvas-confetti";
 
+
+let canFire = true;
 function App() {
   const [showQR, setShowQR] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -91,6 +94,37 @@ function App() {
     setTimeout(() => setToast(null), 3000);
   };
 
+  const fireConfetti = () => {
+    if (!canFire) return; // 🚫 Nếu đang trong thời gian chờ thì thoát
+    canFire = false;       // 🔒 Khóa bắn
+    setTimeout(() => (canFire = true), 1000); // ⏳ Mở khóa sau x giây
+
+    const duration = 0.3 * 1000;
+    const end = Date.now() + duration;
+
+    const frame = () => {
+      confetti({
+        particleCount: 10,
+        angle: 60,
+        spread: 70,
+        origin: { x: 0, y: 0.6 },
+        colors: ["#ffb347", "#ffcc33", "#87df2c", "#00ffff"],
+      });
+      confetti({
+        particleCount: 10,
+        angle: 120,
+        spread: 70,
+        origin: { x: 1, y: 0.6 },
+        colors: ["#ffb347", "#ffcc33", "#87df2c", "#00ffff"],
+      });
+
+      if (Date.now() < end) requestAnimationFrame(frame);
+    };
+
+    frame();
+  };
+
+
   return (
     <div className="App">
       <CustomCursor />
@@ -108,7 +142,14 @@ function App() {
 
       <div className="contact-container">
         <div className="avatar-container">
-          <img src="/avarta.png.jpg" alt="Avatar" className="avatar" />
+          <img
+            src="/avarta.png.jpg"
+            alt="Avatar"
+            className="avatar"
+            onClick={fireConfetti} // 🎉 Khi bấm vào sẽ bắn pháo giấy
+            style={{ cursor: "pointer" }}
+          />
+
           <h1>Võ Đạt</h1>
         </div>
 
