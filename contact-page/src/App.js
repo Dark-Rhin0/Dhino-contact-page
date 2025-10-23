@@ -172,10 +172,27 @@ function App() {
         <div className="anonymous-message">
           <h2>✉️Gửi tin nhắn ẩn danh</h2>
           <textarea
-            placeholder="Nhập nội dung tin nhắn..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
+          placeholder="Nhập nội dung tin nhắn..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onFocus={() => {
+            // Chỉ áp dụng cho mobile
+            if (window.innerWidth < 768) {
+              setTimeout(() => {
+                const form = document.querySelector(".anonymous-message");
+                if (form) {
+                  const rect = form.getBoundingClientRect();
+                  const scrollY =
+                    window.scrollY + rect.top - window.innerHeight / 4; // cuộn đến vị trí hơi cao hơn
+                  window.scrollTo({
+                    top: scrollY,
+                    behavior: "smooth",
+                  });
+                }
+              }, 400); // đợi bàn phím hiện xong
+            }
+          }}
+        />
           <button onClick={sendAnonymousMessage}>Gửi</button>
         </div>
       </div>
