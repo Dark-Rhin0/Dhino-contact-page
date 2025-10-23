@@ -574,3 +574,17 @@
 ::-webkit-scrollbar-corner {
   background: #e0f7ff;
 }
+
+
+/* Trên mobile (dưới 1120px), tự động hiển thị bình thường — hoặc có thể bỏ qua */
+@media (max-width: 1120px) {
+  body {
+    cursor: auto;
+  }
+}
+
+@media (max-width: 1120px) {
+  #glass-cursor {
+    display: none;
+  }
+}
