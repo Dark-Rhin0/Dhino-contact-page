@@ -182,10 +182,8 @@ function App() {
                 const form = document.querySelector(".anonymous-message");
                 if (form) {
                   const rect = form.getBoundingClientRect();
-                  const scrollY =
-                    window.scrollY + rect.top - window.innerHeight / 4; // cuộn đến vị trí hơi cao hơn
                   window.scrollTo({
-                    top: scrollY,
+                    top: document.body.scrollHeight,
                     behavior: "smooth",
                   });
                 }
