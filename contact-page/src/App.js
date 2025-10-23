@@ -176,20 +176,38 @@ function App() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onFocus={() => {
-            // Chỉ áp dụng cho mobile
             if (window.innerWidth < 768) {
-              setTimeout(() => {
-                const form = document.querySelector(".anonymous-message");
-                if (form) {
-                  const rect = form.getBoundingClientRect();
+              // Nếu có visualViewport (đa số trình duyệt mobile hiện nay hỗ trợ)
+              if (window.visualViewport) {
+                const handleResize = () => {
                   window.scrollTo({
                     top: document.body.scrollHeight,
                     behavior: "smooth",
                   });
-                }
-              }, 400); // đợi bàn phím hiện xong
+                };
+
+                // Gọi khi viewport thay đổi (bàn phím hiện)
+                window.visualViewport.addEventListener("resize", handleResize, { once: true });
+
+                // Dự phòng cho trường hợp không kích hoạt resize
+                setTimeout(() => {
+                  window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: "smooth",
+                  });
+                }, 600);
+              } else {
+                // fallback cho trình duyệt cũ
+                setTimeout(() => {
+                  window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: "smooth",
+                  });
+                }, 600);
+              }
             }
           }}
+
         />
           <button onClick={sendAnonymousMessage}>Gửi</button>
         </div>
