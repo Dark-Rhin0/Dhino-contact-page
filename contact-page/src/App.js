@@ -228,7 +228,7 @@ function App() {
             <div className="qr-frame" ref={qrRef}>
               <div className="qr-border"></div>
               <QRCodeCanvas value={window.location.href} size={200} />
-              <p className="qr-caption">SV UIT</p>
+              <p className="qr-caption" style={{fontSize: "24px"}}>⚽🏀🎱🏐</p>
             </div>
 
             <div className="qr-buttons">
