@@ -115,6 +115,12 @@
   font-size: 60px;
 }
 
+.contact-links img {
+  position: absolute;
+  left: 15px;
+  font-size: 60px;
+}
+
 /* 🌈 Responsive giữ hình chữ nhật */
 
 /* Tablet */

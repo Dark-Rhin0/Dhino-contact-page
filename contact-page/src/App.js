@@ -160,6 +160,9 @@ function App() {
           <a href="https://www.instagram.com/datvo980/" target="_blank" rel="noopener noreferrer">
             <i className="fa-brands fa-instagram"></i> Instagram
           </a>
+          <a href="https://zalo.me/0919976031" target="_blank" rel="noopener noreferrer">
+            <img src="/icons8-zalo.svg" alt="Zalo" className="zalo-icon" /> Zalo
+          </a>
           <a href="https://www.tiktok.com/@darkrhino65" target="_blank" rel="noopener noreferrer">
             <i className="fa-brands fa-tiktok"></i> Tiktok
           </a>
