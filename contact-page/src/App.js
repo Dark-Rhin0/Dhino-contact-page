@@ -169,6 +169,9 @@ function App() {
           <a href="mailto:voletiendat09@gmail.com">
             <i className="fa-solid fa-envelope"></i> Email
           </a>
+          <a href="https://portfolio-dhino.vercel.app/" target="_blank" rel="noopener noreferrer">
+            <i class="fa-regular fa-address-card"></i> Contact 4 work
+          </a>
         </div>
 
         {/* 💌 Form gửi tin nhắn ẩn danh */}
